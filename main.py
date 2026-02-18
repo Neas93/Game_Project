@@ -5,9 +5,13 @@ line = "-----------------------"
 
 def main():
     print("Welcome to the DnD Game!")
-    player = character_creation()
 
-    # Dummy enemy
+    # Opret spiller
+    player_info = character_creation()
+    player = player_info["class"]
+    race = player_info["race"]
+
+    # Dummy enemy til test
     enemy = BasicCombat("Goblin", hp=10, ac=10)
     print("\nA wild Goblin appears!\n")
 
@@ -33,13 +37,21 @@ def main():
         else:
             print("Invalid action!")
 
+        # Enemy angriber tilbage, hvis den lever
         if enemy.is_alive():
+            print(f"\n{enemy.name} attacks!")
             enemy.basic_attack(player)
         else:
             print("Enemy defeated!")
 
+        # Vis spillerens HP efter runden
+        print(f"\n{player.name} HP: {player.hp}")
+
+    # Resultat
     if not player.is_alive():
         print(f"{player.name} has been defeated!")
+    elif not enemy.is_alive():
+        print(f"{player.name} wins the fight!")
 
 if __name__ == "__main__":
     main()

@@ -1,11 +1,21 @@
 from classes.Warrior.warrior import Warrior
 from classes.Mage.mage import Mage
 
+from races.Human.human import Human
+from races.Elf.elf import Elf
+from races.Dwarf.dwarf import Dwarf
+
 line = "-----------------------"
 
 classes = {
     "Warrior": Warrior,
     "Mage": Mage
+}
+
+races = {
+    "Human": Human,
+    "Elf": Elf,
+    "Dwarf": Dwarf
 }
 
 def choose_option(options, text):
@@ -21,6 +31,13 @@ def choose_option(options, text):
             print("Invalid choice! Try again.\n")
 
 def character_creation():
+    # Vælg race
+    print("Choose your race:")
+    race_choice = choose_option(races, "Race: ")
+    player_race = races[race_choice]()
+    print(f"\nYou chose {player_race.race_name}")
+    print(f"Racial buff: {player_race.racial_buff}\n")
+
     # Navn
     player_name = input("Enter your character name: ")
 
@@ -39,4 +56,7 @@ def character_creation():
             print(f"  {key}: {value}")
 
     print(line)
-    return player_class
+    return {
+        "race": player_race,
+        "class": player_class
+    }
