@@ -1,17 +1,15 @@
-class Warrior:
-    def __init__(self):
-        self.class_name = "Warrior"
-        self.hp = 100
-        self.resource_name = "Rage"
-        self.resource_amount = 50
+from classes.base_class import BasicCombat, roll_damage
 
-        self.abilities = {
-            "Whirlwind": {"damage": 50, "target": "AOE", "cost": 15},
-            "Bash": {"damage": 15, "target": "Single target", "cost": 10},
-            "Heroic Strike": {
-                "damage": 15,
-                "target": "Single target",
-                "cost": 0,
-                "rage_generation": 15
-            }
+class Warrior(BasicCombat):
+    def __init__(self, name):
+        super().__init__(name, hp=20, ac=15, attack_bonus=2)
+        self.class_name = "Warrior"
+        self.abilities["Power Strike"] = {
+            "Damage": "1d8",
+            "Description": "A powerful strike for extra damage"
         }
+
+    def power_strike(self, target):
+        print(f"{self.name} uses Power Strike!")
+        dmg = roll_damage("1d8")
+        target.take_damage(dmg)
