@@ -1,11 +1,10 @@
 from functions import character_creation
 from classes.base_class import roll_damage
 
-# Encounter funktion med korrekt Enemy-klasse
+# Encounter funktion
 def encounter(player):
     print("\nA wild Goblin appears!")
 
-    # Enemy med ac og attack_bonus
     class Enemy:
         def __init__(self):
             self.name = "Goblin"
