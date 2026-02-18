@@ -2,7 +2,7 @@
 from classes.Warrior.warrior import Warrior
 from classes.Mage.mage import Mage
 
-# Subclasses
+# Subclasses (kræver __init__.py i hver subclasses folder)
 from classes.Warrior.subclasses import Barbarian, EldritchKnight
 from classes.Mage.subclasses import Bladesinger, Abjuration
 
@@ -13,13 +13,13 @@ from races.Dwarf.dwarf import Dwarf
 
 line = "-----------------------"
 
-# Base classes dictionary
+# Base classes
 classes = {
     "Warrior": Warrior,
     "Mage": Mage
 }
 
-# Subclasses dictionary
+# Subclasses
 subclasses = {
     "Warrior": {
         "Barbarian": Barbarian,
@@ -31,7 +31,7 @@ subclasses = {
     }
 }
 
-# Races dictionary
+# Races
 races = {
     "Human": Human,
     "Elf": Elf,
@@ -53,32 +53,26 @@ def character_creation():
     # Vælg race
     print("Choose your race:")
     race_choice = choose_option(races, "Race: ")
-    player_race = races[race_choice]()  # instantiér race
+    player_race = races[race_choice]()  # instantiate
     print(f"\nYou chose {player_race.race_name}")
     print(f"Racial buff: {player_race.racial_buff}\n")
-
-    # Navn
-    player_name = input("Enter your character name: ")
 
     # Vælg base class
     print("Choose your class:")
     class_choice = choose_option(classes, "Class: ")
+    name = input("Enter your character name: ")
+    player_class = classes[class_choice](name)
 
-    # Vælg subclass
-    print("Choose your subclass:")
-    subclass_choice = choose_option(subclasses[class_choice], "Subclass: ")
-    player_class = subclasses[class_choice][subclass_choice](player_name)  # instantiér subclass
+    # Vælg subclass, hvis der findes nogen
+    if class_choice in subclasses:
+        print(f"Choose your subclass for {class_choice}:")
+        subclass_choice = choose_option(subclasses[class_choice], "Subclass: ")
+        player_class = subclasses[class_choice][subclass_choice](name)
 
     print(f"\nYou chose {player_class.class_name}")
     print(f"HP: {player_class.hp}")
+    print("Abilities:", ", ".join(player_class.abilities.keys()))
 
-    print("\nAbilities:")
-    for name, info in player_class.abilities.items():
-        print(f"\n{name}")
-        for key, value in info.items():
-            print(f"  {key}: {value}")
-
-    print(line)
     return {
         "race": player_race,
         "class": player_class

@@ -1,57 +1,96 @@
 from functions import character_creation
-from classes.base_class import BasicCombat
+from classes.base_class import roll_damage
 
-line = "-----------------------"
+# Encounter funktion med korrekt Enemy-klasse
+def encounter(player):
+    print("\nA wild Goblin appears!")
 
-def main():
-    print("Welcome to the DnD Game!")
+    # Enemy med ac og attack_bonus
+    class Enemy:
+        def __init__(self):
+            self.name = "Goblin"
+            self.hp = 12
+            self.ac = 12
+            self.attack_bonus = 1
+            self.abilities = {}
 
-    # Opret spiller
-    player_info = character_creation()
-    player = player_info["class"]
-    race = player_info["race"]
+        def take_damage(self, amount):
+            self.hp -= amount
+            print(f"{self.name} takes {amount} damage! HP left: {self.hp}")
 
-    # Dummy enemy til test
-    enemy = BasicCombat("Goblin", hp=10, ac=10)
-    print("\nA wild Goblin appears!\n")
+        def is_alive(self):
+            return self.hp > 0
 
-    while enemy.is_alive() and player.is_alive():
-        print(line)
-        print("Choose action:")
+        def basic_attack(self, target):
+            dmg = roll_damage("1d4") + self.attack_bonus
+            print(f"{self.name} attacks {target.name} for {dmg} damage!")
+            target.take_damage(dmg)
+
+    enemy = Enemy()
+
+    while enemy.is_alive() and player["class"].hp > 0:
+        print("\n--- Choose Action ---")
         print("1. Basic Attack")
-        if player.class_name == "Warrior":
-            print("2. Power Strike")
-        elif player.class_name == "Mage":
-            print("2. Fireball")
-        print(line)
+        print("2. Use Ability")
+        choice = input("Choose action: ")
 
-        action = input("Action: ")
+        if choice == "1":
+            player["class"].basic_attack(enemy)
+        elif choice == "2":
+            abilities = list(player["class"].abilities.keys())
+            if not abilities:
+                print("No abilities available!")
+                continue
 
-        if action == "1":
-            player.basic_attack(enemy)
-        elif action == "2":
-            if player.class_name == "Warrior":
-                player.power_strike(enemy)
-            elif player.class_name == "Mage":
-                player.fireball(enemy)
+            print("\nChoose ability:")
+            for i, a in enumerate(abilities, start=1):
+                print(f"{i}. {a}")
+            a_choice = input("Ability: ")
+            try:
+                ability_name = abilities[int(a_choice)-1]
+                ability_func = getattr(player["class"], ability_name.lower().replace(" ", "_"), None)
+                if ability_func:
+                    ability_func(enemy)
+                else:
+                    print(f"{ability_name} used (no function yet)")
+            except:
+                print("Invalid choice!")
         else:
-            print("Invalid action!")
+            print("Invalid choice!")
+            continue
 
-        # Enemy angriber tilbage, hvis den lever
+        # Enemy counterattack
         if enemy.is_alive():
-            print(f"\n{enemy.name} attacks!")
-            enemy.basic_attack(player)
+            enemy.basic_attack(player["class"])
+
+    if player["class"].hp <= 0:
+        print("You were defeated...")
+    else:
+        print(f"{enemy.name} is defeated! You win!")
+
+# Main loop
+def main():
+    print("Welcome to the RPG!")
+    player = character_creation()
+
+    while True:
+        print("\n--- Main Menu ---")
+        print("1. Explore (fight an enemy)")
+        print("2. Rest (heal)")
+        print("3. Quit")
+        choice = input("Choose action: ")
+
+        if choice == "1":
+            encounter(player)
+        elif choice == "2":
+            # Simpelt heal
+            player["class"].hp += 5
+            print(f"You rest and recover 5 HP. Current HP: {player['class'].hp}")
+        elif choice == "3":
+            print("Goodbye!")
+            break
         else:
-            print("Enemy defeated!")
-
-        # Vis spillerens HP efter runden
-        print(f"\n{player.name} HP: {player.hp}")
-
-    # Resultat
-    if not player.is_alive():
-        print(f"{player.name} has been defeated!")
-    elif not enemy.is_alive():
-        print(f"{player.name} wins the fight!")
+            print("Invalid choice!")
 
 if __name__ == "__main__":
     main()
