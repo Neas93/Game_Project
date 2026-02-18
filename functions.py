@@ -2,11 +2,11 @@
 from classes.Warrior.warrior import Warrior
 from classes.Mage.mage import Mage
 
-# Subclasses via __init__.py i subclasses mapper
+# Subclasses
 from classes.Warrior.subclasses import Barbarian, EldritchKnight
 from classes.Mage.subclasses import Bladesinger, Abjuration
 
-# Races – direkte import af klasser
+# Races
 from races.Human.human import Human
 from races.Elf.elf import Elf
 from races.Dwarf.dwarf import Dwarf
