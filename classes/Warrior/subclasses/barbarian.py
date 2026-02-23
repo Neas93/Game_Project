@@ -3,9 +3,9 @@ from classes.base_class import roll_damage
 
 class Barbarian(Warrior):
     def __init__(self, name):
-        super().__init__(name)  # arver HP, AC, attack_bonus og Power Strike
+        super().__init__(name) 
         self.class_name = "Barbarian"
-        self.raging = False  # Rage-status
+        self.raging = False 
 
         # Barbarian-specifik evne
         self.abilities["Rage"] = {

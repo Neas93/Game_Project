@@ -3,7 +3,7 @@ from classes.base_class import roll_damage
 
 class Bladesinger(Mage):
     def __init__(self, name):
-        super().__init__(name)  # arver HP, AC, attack_bonus og Mage-spells
+        super().__init__(name)
         self.class_name = "Bladesinger"
 
         # Bladesinger specifikke abilities

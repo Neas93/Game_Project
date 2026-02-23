@@ -2,7 +2,7 @@ from classes.Mage.mage import Mage
 
 class Abjuration(Mage):
     def __init__(self, name):
-        super().__init__(name)  # arver HP, AC, attack_bonus og Mage-spells
+        super().__init__(name) 
         self.class_name = "Abjuration"
 
         # Abjuration-specifikke abilities
