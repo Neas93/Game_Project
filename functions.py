@@ -2,7 +2,7 @@
 from classes.Warrior.warrior import Warrior
 from classes.Mage.mage import Mage
 
-# Subclasses (kræver __init__.py i hver subclasses folder)
+# Subclasses
 from classes.Warrior.subclasses import Barbarian, EldritchKnight
 from classes.Mage.subclasses import Bladesinger, Abjuration
 
