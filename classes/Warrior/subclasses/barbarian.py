@@ -31,7 +31,7 @@ class Barbarian(Warrior):
             print(f"{self.name} is not raging! Using normal attack instead.")
             self.basic_attack(target)
             return
-        
+        #damage
         print(f"{self.name} uses Rage Attack!")
         dmg = roll_damage("1d6") + roll_damage("1d6")  # ekstra d6 i rage
         target.take_damage(dmg)
